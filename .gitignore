@@ -1,0 +1,9 @@
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+node_modules/
+evidence/artifacts/*.zip
+loadtest/results/*
+!loadtest/results/README.md
