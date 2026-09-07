@@ -25,7 +25,6 @@ services:
     build:
       context: jenkins
       dockerfile: Dockerfile
-    image: jenkins/jenkins:lts
     container_name: jenkins
     ports:
       - "8081:8080"
@@ -35,9 +34,3 @@ services:
 
 volumes:
   jenkins_home:
-    restart: always
-    volumes:
-      - jenkins-home:/var/jenkins_home
-
-volumes:
-  jenkins-home:
