@@ -1,0 +1,4 @@
+git
+workflow-aggregator
+timestamper
+junit
