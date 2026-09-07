@@ -11,7 +11,7 @@ APP_VERSION = os.getenv("APP_VERSION", "0.2.0")
 
 FIELD_DEFINITIONS: list[dict[str, Any]] =     [{'name': 'name', 'label': 'Player name', 'type': 'text', 'required': True},
      {'name': 'position', 'label': 'Position', 'type': 'text', 'required': True},
-     {'name': 'age', 'label': 'Age', 'type': 'number', 'required': True, 'min': 15},
+     {'name': 'age', 'label': 'Age', 'type': 'number', 'required': True, 'min': 15, 'max': 120},
      {'name': 'contract_until',
       'label': 'Contract until',
       'type': 'number',
