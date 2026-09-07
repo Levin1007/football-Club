@@ -16,6 +16,7 @@ The application supports basic CRUD operations and two theme-specific actions: E
 | backend through proxy | API through Nginx proxy | http://localhost:8080/api/health |
 | backend direct access | FastAPI backend | http://localhost:8000 |
 | backend docs | OpenAPI documentation | http://localhost:8000/docs |
+| jenkins | CI server | http://localhost:8081 |
 
 ## Requirements
 
