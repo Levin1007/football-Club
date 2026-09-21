@@ -20,3 +20,16 @@ services:
       - backend
     ports:
       - "${FRONTEND_PORT:-8080}:80"
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    ports:
+      - "8081:8080"
+      - "50000:50000"
+    restart: always
+    volumes:
+      - jenkins-home:/var/jenkins_home
+
+volumes:
+  jenkins-home:

@@ -1,3 +1,4 @@
+import html
 import os
 from typing import Any
 
@@ -118,7 +119,7 @@ def _validate_payload(payload: dict[str, Any]) -> dict[str, Any]:
 
             cleaned[name] = int(number) if number.is_integer() else round(number, 2)
         else:
-            cleaned[name] = str(value).strip()
+            cleaned[name] = html.escape(str(value).strip())[:200]
 
     return cleaned
 
