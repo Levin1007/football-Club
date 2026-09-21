@@ -34,12 +34,32 @@ function buildForm() {
 
     const input = document.createElement("input");
     input.name = field.name;
-    input.type = field.type === "number" ? "number" : "text";
+    const isNumeric = field.type === "number" || field.type === "integer" || field.name === "age";
+    input.type = isNumeric ? "number" : "text";
     input.placeholder = field.label;
     input.required = Boolean(field.required);
 
-    if (field.min !== undefined) input.min = field.min;
-    if (field.max !== undefined) input.max = field.max;
+    if (field.min !== undefined) input.min = String(field.min);
+    if (field.max !== undefined) input.max = String(field.max);
+
+    input.addEventListener("input", () => {
+      const value = Number(input.value);
+      let message = "";
+
+      if (isNumeric && input.value !== "") {
+        if (field.min !== undefined && value < Number(field.min)) {
+          message = `Minimum allowed value is ${field.min}.`;
+        } else if (field.max !== undefined && value > Number(field.max)) {
+          message = `Maximum allowed value is ${field.max}.`;
+        }
+      }
+
+      input.setCustomValidity(message);
+    });
+
+    input.addEventListener("blur", () => {
+      input.reportValidity();
+    });
 
     group.append(caption, input);
     formFields.appendChild(group);
@@ -115,8 +135,8 @@ function renderItem(item) {
 async function loadItems() {
   try {
     const [itemsResponse, summaryResponse] = await Promise.all([
-      fetch(`${config.apiBaseUrl}/items`),
-      fetch(`${config.apiBaseUrl}/summary`),
+      fetch(`${config.apiBaseUrl}/items`, { cache: "no-store" }),
+      fetch(`${config.apiBaseUrl}/summary`, { cache: "no-store" }),
     ]);
 
     if (!itemsResponse.ok) throw new Error(`Backend returned ${itemsResponse.status}`);
@@ -144,6 +164,7 @@ async function saveItem(payload) {
     method: editingId ? "PUT" : "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
+    cache: "no-store",
   });
 
   if (!response.ok) {
@@ -154,7 +175,10 @@ async function saveItem(payload) {
 
 async function deleteItem(itemId) {
   try {
-    const response = await fetch(`${config.apiBaseUrl}/items/${itemId}`, { method: "DELETE" });
+    const response = await fetch(`${config.apiBaseUrl}/items/${itemId}`, {
+      method: "DELETE",
+      cache: "no-store",
+    });
     if (!response.ok) throw new Error(`Backend returned ${response.status}`);
     await loadItems();
     setStatus(`${config.entity} deleted.`, "success");
@@ -167,6 +191,7 @@ async function runAction(itemId, actionId) {
   try {
     const response = await fetch(`${config.apiBaseUrl}/items/${itemId}/actions/${actionId}`, {
       method: "POST",
+      cache: "no-store",
     });
     if (!response.ok) throw new Error(`Backend returned ${response.status}`);
     await loadItems();
@@ -178,6 +203,10 @@ async function runAction(itemId, actionId) {
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+
+  if (!form.reportValidity()) {
+    return;
+  }
 
   const payload = Object.fromEntries(new FormData(form).entries());
 

@@ -1,3 +1,4 @@
+import html
 import os
 from typing import Any
 
@@ -10,7 +11,7 @@ APP_VERSION = os.getenv("APP_VERSION", "0.2.0")
 
 FIELD_DEFINITIONS: list[dict[str, Any]] =     [{'name': 'name', 'label': 'Player name', 'type': 'text', 'required': True},
      {'name': 'position', 'label': 'Position', 'type': 'text', 'required': True},
-     {'name': 'age', 'label': 'Age', 'type': 'number', 'required': True, 'min': 15},
+     {'name': 'age', 'label': 'Age', 'type': 'number', 'required': True, 'min': 15, 'max': 120},
      {'name': 'contract_until',
       'label': 'Contract until',
       'type': 'number',
@@ -118,7 +119,7 @@ def _validate_payload(payload: dict[str, Any]) -> dict[str, Any]:
 
             cleaned[name] = int(number) if number.is_integer() else round(number, 2)
         else:
-            cleaned[name] = str(value).strip()
+            cleaned[name] = html.escape(str(value).strip())[:200]
 
     return cleaned
 

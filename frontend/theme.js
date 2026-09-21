@@ -23,7 +23,8 @@ window.APP_CONFIG = {
     "label": "Age",
     "type": "number",
     "required": true,
-    "min": 15
+    "min": 15,
+    "max": 120
   },
   {
     "name": "contract_until",
