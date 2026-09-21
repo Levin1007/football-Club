@@ -5,7 +5,6 @@ from typing import Any
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-
 APP_NAME = os.getenv("APP_NAME", "Football Club Manager")
 APP_VERSION = os.getenv("APP_VERSION", "0.2.0")
 
