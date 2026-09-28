@@ -46,7 +46,8 @@ pipeline {
             steps {
                 sh '''
                     mkdir -p evidence/artifacts
-                    zip -r evidence/artifacts/app-${BUILD_NUMBER}.zip \
+                    APP_VERSION=$(grep -m1 '^APP_VERSION' .env.example | cut -d '=' -f2)
+                    zip -r evidence/artifacts/app-${APP_VERSION}-build-${BUILD_NUMBER}.zip \
                         backend frontend docker-compose.yml README.md
                 '''
             }
